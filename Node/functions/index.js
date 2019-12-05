@@ -54,6 +54,16 @@ app.get('/:outcode/:long/:lat', async (req, res) => {
                 tempObj.name = restaurants.data().name;
                 tempObj.postcode = restaurants.data().postcode;
 
+                // Check if array exists
+                if(restaurants.data().display !== undefined){
+                    
+                    // Push every map object inside the temporary object
+                    for(var item of restaurants.data().display){
+                       tempObj.food.push(item);
+                    }
+                }
+                
+
                 // Get the lattitude difference
                 var latDifference = Math.abs(restaurants.data().latitude - req.params.lat);
 
@@ -81,8 +91,8 @@ app.get('/:outcode/:long/:lat', async (req, res) => {
         })
 
         // Get food image and name for every restaurant
-        await getFood(restaurantsData, 0, req.params.outcode);
-        console.log(JSON.stringify(restaurantsData));
+        // await getFood(restaurantsData, 0, req.params.outcode);
+        // console.log(JSON.stringify(restaurantsData));
         // Send all the data
         res.send(restaurantsData);
     }
