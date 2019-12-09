@@ -86,7 +86,7 @@ class App extends React.Component {
 
     }
 
-    // this.props.navigation.navigate('HomePage');
+    this.props.navigation.navigate('HomePage');
   }
 
   render() {
