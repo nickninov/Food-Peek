@@ -47,12 +47,16 @@ app.get('/:outcode/:long/:lat', async (req, res) => {
                     distance: null,
                     name: '',
                     postcode: '',
+                    price: '',
+                    cusine: '',
                     food: []
                 };
 
                 // Store current values in the temporary object
                 tempObj.name = restaurants.data().name;
                 tempObj.postcode = restaurants.data().postcode;
+                tempObj.price = restaurants.data().price;
+                tempObj.cusine = restaurants.data().cusine;
 
                 // Check if array exists
                 if(restaurants.data().display !== undefined){
