@@ -51,11 +51,15 @@ class HomePage extends React.Component {
       price: 0.00,
       quality: '',
       outcode: 'N/A',
-      images: [],
       hasData: false,
+      // Store all data
       dataHolder: [],
-      sortedData: [],
 
+      // Store the current selected data
+      images: [],
+
+      // Store the initially displayed data
+      initialData: [],
 
       // modal states
       visible: false,
@@ -96,10 +100,16 @@ class HomePage extends React.Component {
       })
     }
 
+    // Set data that will be initially displayed
     this.setState({
       images: await this.getData(this.state.outcode, userLong, userLat),
-      hasData: true
+      hasData: true,
     });
+
+    // Store default initial data
+    this.setState({
+      initialData: this.state.images
+    })
   }
 
   async getData(outcode, userLong, userLat){
@@ -135,35 +145,71 @@ class HomePage extends React.Component {
   }
 
   // A method that will display items based on the dropdown values
-  dropdownSort(price, cusine, diet){
-
-    // Wait for 5 seconds
-    setTimeout(() => {
-      this.sortOptions(price,cusine, diet);
-    }, 1000)
-    
-  }
-
   sortOptions(price, cusine, diet) {
 
-    // Temporary hold all of the data
+    // Temporary array that holds all the data
     var tempArr = this.state.dataHolder;
 
-    // Access the food of the restaurant and the restaurant's details
-    for(var restaurant of tempArr){
-      console.log(restaurant)
-    }
+    var sortHolder = [];
+
     // Sort by price
     if(price != null && cusine == null && diet == null){
-      console.log("Sort by price");
+
+      // Access the food of the restaurant and the restaurant's details
+      for(var restaurant of tempArr){
+
+        // Check the price if they match with the selected value from the picker
+        if(price == restaurant.price) {
+          // Push every food object inside the array
+          for(var foodObject of restaurant.food){
+            sortHolder.push(foodObject);
+          }
+        }
+      }
+
+      this.setState({
+        images: sortHolder
+      });
+
     }
     // Sort by cusine
     else if(price == null && cusine != null && diet == null) {
-      console.log("Sort by cusine");
+
+      // Access the food of the restaurant and the restaurant's details
+      for(var restaurant of tempArr){
+
+        // Check the price if they match with the selected value from the picker
+        if(cusine == restaurant.cusine) {
+
+          // Push every food object inside the array
+          for(var foodObject of restaurant.food){
+            sortHolder.push(foodObject);
+          }
+        }
+      }
+
+      this.setState({
+        images: sortHolder
+      });
     }
     // Sort by diet
     else if(price == null && cusine == null && diet != null) {
-      console.log("Sort by diet");
+      // Access the food of the restaurant and the restaurant's details
+      for(var restaurant of tempArr){
+          
+          // Push every food object inside the array
+          for(var foodObject of restaurant.food){
+            
+            // Check if current food product is the given diet
+            if(foodObject.diet == diet){
+              sortHolder.push(foodObject);
+            }
+          }
+      }
+
+      this.setState({
+        images: sortHolder
+      });
     }
     // Sort by price and cusine
     else if(price != null && cusine != null && diet == null) {
@@ -180,6 +226,13 @@ class HomePage extends React.Component {
     // Sort by price, cusine and diet
     else if(price != null && cusine != null && diet != null) {
       console.log("Sort by price cusine and diet");
+    }
+
+    // If price, cusine and diet are null
+    else{
+      this.setState({
+        images: this.state.initialData
+      })
     }
   }
 
@@ -209,11 +262,6 @@ class HomePage extends React.Component {
             <Image source = {require('../assets/images/logo.png')}/>
           </TouchableOpacity>
 
-            {/* <FoodModal 
-            visible = {true}
-            name = "Joker" 
-            image = {"https://i.redd.it/q5uf16rx0s121.jpg"} 
-            restaurant = {"Ligma"}/> */}
         </View>
 
       );
@@ -248,8 +296,7 @@ class HomePage extends React.Component {
                         pricePicker: await value
                       });
 
-                      this.dropdownSort(this.state.pricePicker, this.state.cusinePicker, this.state.dietPicker);
-
+                      this.sortOptions(this.state.pricePicker, this.state.cusinePicker, this.state.dietPicker);
                     }}
                     placeholder = {{label: 'Price'}}
                     style = {dropdownBox}
@@ -269,9 +316,7 @@ class HomePage extends React.Component {
                         cusinePicker: await value
                       });
 
-                      this.dropdownSort(this.state.pricePicker, this.state.cusinePicker, this.state.dietPicker);
-                      
-                      console.log("\n\n\n");
+                      this.sortOptions(this.state.pricePicker, this.state.cusinePicker, this.state.dietPicker);
                     }}
                     placeholder = {{label: 'Cusine'}}
                     style = {dropdownBox}
@@ -291,9 +336,7 @@ class HomePage extends React.Component {
                         dietPicker: await value
                       });
 
-                      this.dropdownSort(this.state.pricePicker, this.state.cusinePicker, this.state.dietPicker);
-
-                      console.log("\n\n\n");
+                      this.sortOptions(this.state.pricePicker, this.state.cusinePicker, this.state.dietPicker);
                     }}
                     placeholder = {{label: 'Diet'}}
                     style = {dropdownBox}
