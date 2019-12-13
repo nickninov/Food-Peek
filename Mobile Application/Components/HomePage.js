@@ -150,6 +150,7 @@ class HomePage extends React.Component {
     // Temporary array that holds all the data
     var tempArr = this.state.dataHolder;
 
+    // An array that will hold the data depending on the user's select
     var sortHolder = [];
 
     // Sort by price
@@ -167,6 +168,7 @@ class HomePage extends React.Component {
         }
       }
 
+      // Put the data inside a the FlatList state
       this.setState({
         images: sortHolder
       });
@@ -188,12 +190,15 @@ class HomePage extends React.Component {
         }
       }
 
+      // Put the data inside a the FlatList state
       this.setState({
         images: sortHolder
       });
     }
+
     // Sort by diet
     else if(price == null && cusine == null && diet != null) {
+
       // Access the food of the restaurant and the restaurant's details
       for(var restaurant of tempArr){
           
@@ -207,17 +212,58 @@ class HomePage extends React.Component {
           }
       }
 
+      // Put the data inside a the FlatList state
       this.setState({
         images: sortHolder
       });
     }
+    
     // Sort by price and cusine
     else if(price != null && cusine != null && diet == null) {
-      console.log("Sort by price and cusine");
+
+      // Access the food of the restaurant and the restaurant's details
+      for(var restaurant of tempArr){
+
+        // Check if current food product is the given cusine and price
+        if(price == restaurant.price && cusine == restaurant.cusine){
+
+          // Push every food object inside the array
+          for(var foodObject of restaurant.food){
+            sortHolder.push(foodObject);
+          }
+        }
+      }
+
+      // Put the data inside a the FlatList state
+      this.setState({
+        images: sortHolder
+      });
     }
+
     // Sort by price and diet
     else if(price != null && cusine == null && diet != null) {
-      console.log("Sort by price and diet");
+
+      // Access the food of the restaurant and the restaurant's details
+      for(var restaurant of tempArr){
+
+        // Check if current food product is the given price
+        if(price == restaurant.price){
+
+          // Push every food object inside the array
+          for(var foodObject of restaurant.food){
+            
+            // Check if current food product is the given diet
+            if(foodObject.diet == diet){
+              sortHolder.push(foodObject);
+            }
+          }
+        }
+      }
+
+      // Put the data inside a the FlatList state
+      this.setState({
+        images: sortHolder
+      });
     }
     // Sort by cusine and diet
     else if(price == null && cusine != null && diet != null) {
@@ -230,6 +276,8 @@ class HomePage extends React.Component {
 
     // If price, cusine and diet are null
     else{
+
+      // Put the data inside a the FlatList state
       this.setState({
         images: this.state.initialData
       })
@@ -318,7 +366,7 @@ class HomePage extends React.Component {
 
                       this.sortOptions(this.state.pricePicker, this.state.cusinePicker, this.state.dietPicker);
                     }}
-                    placeholder = {{label: 'Cusine'}}
+                    placeholder = {{label: 'Cuisine'}}
                     style = {dropdownBox}
                     items={[
                       {label: 'Italian', value: 'italian'},
