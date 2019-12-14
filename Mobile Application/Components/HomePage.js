@@ -168,10 +168,13 @@ class HomePage extends React.Component {
         }
       }
 
-      // Put the data inside a the FlatList state
-      this.setState({
-        images: sortHolder
-      });
+      // Check if the FlatList data should be updated
+      if(sortHolder.length > 0) {
+        // Put the data inside a the FlatList state
+        this.setState({
+          images: sortHolder
+        });
+      }
 
     }
     // Sort by cusine
@@ -190,10 +193,13 @@ class HomePage extends React.Component {
         }
       }
 
-      // Put the data inside a the FlatList state
-      this.setState({
-        images: sortHolder
-      });
+      // Check if the FlatList data should be updated
+      if(sortHolder.length > 0) {
+        // Put the data inside a the FlatList state
+        this.setState({
+          images: sortHolder
+        });
+      }
     }
 
     // Sort by diet
@@ -212,10 +218,13 @@ class HomePage extends React.Component {
           }
       }
 
-      // Put the data inside a the FlatList state
-      this.setState({
-        images: sortHolder
-      });
+      // Check if the FlatList data should be updated
+      if(sortHolder.length > 0) {
+        // Put the data inside a the FlatList state
+        this.setState({
+          images: sortHolder
+        });
+      }
     }
     
     // Sort by price and cusine
@@ -234,10 +243,13 @@ class HomePage extends React.Component {
         }
       }
 
-      // Put the data inside a the FlatList state
-      this.setState({
-        images: sortHolder
-      });
+      // Check if the FlatList data should be updated
+      if(sortHolder.length > 0) {
+        // Put the data inside a the FlatList state
+        this.setState({
+          images: sortHolder
+        });
+      }
     }
 
     // Sort by price and diet
@@ -249,7 +261,7 @@ class HomePage extends React.Component {
         // Check if current food product is the given price
         if(price == restaurant.price){
 
-          // Push every food object inside the array
+          // Iterate over every food object
           for(var foodObject of restaurant.food){
             
             // Check if current food product is the given diet
@@ -260,18 +272,70 @@ class HomePage extends React.Component {
         }
       }
 
-      // Put the data inside a the FlatList state
-      this.setState({
-        images: sortHolder
-      });
+      // Check if the FlatList data should be updated
+      if(sortHolder.length > 0) {
+        // Put the data inside a the FlatList state
+        this.setState({
+          images: sortHolder
+        });
+      }
     }
-    // Sort by cusine and diet
+
+    // Sort by cuisine and diet
     else if(price == null && cusine != null && diet != null) {
-      console.log("Sort by cusine and diet");
+      console.log("Sort by cuisine and diet\n\n\n");
+
+      // Access the food of the restaurant and the restaurant's details
+      for(var restaurant of tempArr){
+
+        // Check if current food product is the given cusine
+        if(cusine == restaurant.cusine){
+
+          // Iterate over every food object
+          for(var foodObject of restaurant.food) {
+
+            // Check if current food product is the given diet
+            if(diet == foodObject.diet){
+              sortHolder.push(foodObject);
+            }
+          }
+        }
+      }
+
+      // Check if the FlatList data should be updated
+      if(sortHolder.length > 0) {
+        // Put the data inside a the FlatList state
+        this.setState({
+          images: sortHolder
+        });
+      }
     }
-    // Sort by price, cusine and diet
+    // Sort by price, cuisine and diet
     else if(price != null && cusine != null && diet != null) {
-      console.log("Sort by price cusine and diet");
+
+      // Access the food of the restaurant and the restaurant's details
+      for(var restaurant of tempArr){
+
+        // Check if current food product is the given price and cuisine
+        if(price == restaurant.price && cusine == restaurant.cusine){
+        
+           // Iterate over every food object
+           for(var foodObject of restaurant.food) {
+
+            // Check if current food product is the given diet
+            if(diet == foodObject.diet){
+              sortHolder.push(foodObject);
+            }
+          }
+        }
+      }
+      // Check if the FlatList data should be updated
+      if(sortHolder.length > 0) {
+        // Put the data inside a the FlatList state
+        this.setState({
+          images: sortHolder
+        });
+      }
     }
 
     // If price, cusine and diet are null
