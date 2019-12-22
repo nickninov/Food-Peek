@@ -25,7 +25,7 @@ class FoodModal extends React.Component {
     super(props);
 
     this.state = {
-        visible: this.props.visible
+      visible: this.props.visible
     }
   };
 
@@ -38,6 +38,11 @@ class FoodModal extends React.Component {
         visible: true
       })
     }
+    else {
+      this.setState({
+        visible: false
+      })
+    }
   }
 
   render() {
@@ -48,6 +53,7 @@ class FoodModal extends React.Component {
         }}
         onSwipeOut = {() => {
           this.setState({visible: false});
+
         }}
         modalAnimation = {new SlideAnimation({
             slideFrom: 'bottom'
